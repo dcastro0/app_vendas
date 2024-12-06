@@ -36,7 +36,18 @@ const styles = StyleSheet.create({
   error: {
     color: "red",
     fontSize: 14,
-  }
+  },
+  // estilos lista
+  card: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 5,
+    width: "100%",
+    marginTop: 5,
+    borderRadius: 5,
+    backgroundColor: "#000080",
+  },
+
 });
 
 export { styles };

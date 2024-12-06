@@ -1,37 +1,45 @@
+import TextWhite from "@/components/TextWhite";
 import { usePaymentDb } from "@/database/usePayamentDb";
 import { PaymentFormData } from "@/schema/schema";
-import { useCallback, useState } from "react";
-import { RefreshControl } from "react-native";
-import { FlatList, Text, View } from "react-native";
+import { styles } from "@/styles/styles";
+import { useState, useEffect } from "react";
+import { RefreshControl, FlatList, View } from "react-native";
 
 const Lista = () => {
   const [show, setShow] = useState<PaymentFormData[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
   const paymentDb = usePaymentDb();
-  async function getPayments() {
+
+  const getPayments = async () => {
+    setRefreshing(true);
     const response = await paymentDb.getPayments();
     setShow(response as PaymentFormData[]);
-  }
-  useCallback(async () => {
-    await getPayments();
-  }, [getPayments])
+    setRefreshing(false);
+  };
+
+  useEffect(() => {
+    getPayments();
+  }, []);
+
   return (
-    <>
+    <View style={styles.container}>
       <FlatList
-        refreshControl={<RefreshControl refreshing={false} onRefresh={getPayments} />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getPayments} />}
         data={[...show].reverse()}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item) => (item.id?.toString() ?? '')}
         renderItem={({ item }) => (
-          <View style={{ flexDirection: "row", justifyContent: "space-between", borderTopWidth: 1, width: "100%" }} key={item.id}>
-            <Text>{item.id}</Text>
-            <Text>{item.value}</Text>
-            <Text>{item.payMethod}</Text>
-            <Text>{item.createdAt}</Text>
+          <View style={styles.card} key={item.id}>
+            <TextWhite text={item.id?.toLocaleString() || ''} size={18}>
+              {item.id?.toLocaleString() || ''}
+            </TextWhite>
+            <TextWhite text={item.value} size={18}>{item.value}</TextWhite>
+            <TextWhite text={item.payMethod} size={18}>{item.payMethod}</TextWhite>
+            <TextWhite text={item.createdAt || ''} size={18}>{item.createdAt || ''}</TextWhite>
           </View>
         )}
       />
-    </>
-
-  )
-}
+    </View>
+  );
+};
 
 export default Lista;
