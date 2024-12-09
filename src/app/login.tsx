@@ -39,6 +39,7 @@ const LoginScreen = () => {
         render={({ field: { onChange, onBlur, value } }) => (
           <View style={styles.inputContainer}>
             <TextInput
+              inputMode='email'
               style={styles.input}
               placeholder="Email"
               value={value}
@@ -94,6 +95,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingLeft: 10,
     fontSize: 16,
+    borderRadius: 4,
   },
   errorText: {
     color: 'red',

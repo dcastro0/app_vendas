@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Pressable, View, Alert, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { TextInputMask } from "react-native-masked-text";
 import { RadioButton } from "react-native-paper";
@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { styles } from "../../styles/styles";
 import { PaymentSchema, PaymentFormData } from "../../schema/schema";
 import { usePaymentDb } from "@/database/usePayamentDb";
+import tw from "twrnc"
 
 const App = () => {
   const { control, handleSubmit, formState: { errors }, reset } = useForm<PaymentFormData>({
@@ -72,7 +73,7 @@ const App = () => {
               type="money"
               value={value}
               onChangeText={onChange}
-              style={styles.input}
+              style={tw`border border-gray-400 p-2 rounded-md text-8xl text-center w-9/10 h-30`}
               placeholder="R$0,00"
               textAlign="right"
             />
