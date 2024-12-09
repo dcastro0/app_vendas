@@ -3,7 +3,7 @@ import { usePaymentDb } from "@/database/usePayamentDb";
 import { PaymentFormData } from "@/schema/schema";
 import { styles } from "@/styles/styles";
 import { useState, useEffect } from "react";
-import { RefreshControl, FlatList, View } from "react-native";
+import { RefreshControl, FlatList, View, Text, Pressable } from "react-native";
 
 const Lista = () => {
   const [show, setShow] = useState<PaymentFormData[]>([]);
@@ -20,6 +20,21 @@ const Lista = () => {
   useEffect(() => {
     getPayments();
   }, []);
+
+  if (show.length === 0) {
+    return (
+      <View style={styles.container}>
+        <TextWhite text="Sem pagamentos" size={18}>
+          Sem pagamento
+        </TextWhite>
+        <Pressable style={styles.btn} onPress={getPayments}>
+          <TextWhite text="Recarregar" size={18}>
+            Recarregar
+          </TextWhite>
+        </Pressable>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>

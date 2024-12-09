@@ -1,7 +1,21 @@
+import { useAuth } from '@/hooks/useAuth';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Tabs } from 'expo-router';
+import { Redirect, Tabs } from 'expo-router';
+import { Text, View } from 'react-native';
 
 export default function TabLayout() {
+  const { authData, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Carregando aplicativo...</Text>
+      </View>
+    );
+  }
+  if (!authData) {
+    return <Redirect href="/login" />;
+  }
   return (
     <Tabs screenOptions={{ tabBarActiveTintColor: 'blue' }}>
       <Tabs.Screen

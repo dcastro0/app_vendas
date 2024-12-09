@@ -1,22 +1,16 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, Pressable, Alert, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '@/hooks/useAuth';
 
 const AccountScreen = () => {
   const navigation = useNavigation();
+  const { signOut } = useAuth();
 
   // Função para logar o usuário
   const handleLogout = () => {
-    Alert.alert(
-      "Logout",
-      "Tem certeza que deseja sair?",
-      [
-        { text: "Cancelar", style: "cancel" },
-        { text: "Sair" },
-      ]
-    );
-  };
-
+    signOut()
+  }
   // Função para deletar a conta
   const handleDeleteAccount = () => {
     Alert.alert(
