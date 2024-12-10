@@ -8,6 +8,7 @@ import { styles } from "../../styles/styles";
 import { PaymentSchema, PaymentFormData } from "../../schema/schema";
 import { usePaymentDb } from "@/database/usePayamentDb";
 import tw from "twrnc"
+import Button from "@/components/Button";
 
 const App = () => {
   const { control, handleSubmit, formState: { errors }, reset } = useForm<PaymentFormData>({
@@ -105,9 +106,7 @@ const App = () => {
         />
         {errors.payMethod && <Text style={styles.error}>{errors.payMethod.message}</Text>}
 
-        <Pressable style={styles.btn} onPress={handleSubmit(create)}>
-          <Text style={{ color: "white", textAlign: "center", fontSize: 40 }}>Enviar</Text>
-        </Pressable>
+        <Button onPress={handleSubmit(create)} >Enviar</Button>
       </View>
     </TouchableWithoutFeedback>
   );
