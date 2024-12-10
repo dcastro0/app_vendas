@@ -1,11 +1,10 @@
 import React, { createContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContextData, SignInProp } from "@/interfaces/AuthContextData";
 import { AuthData } from "@/interfaces/AuthData";
 import { AuthProviderProps } from "@/interfaces/AuthProviderProps";
 import { authService } from "@/services/authService";
-import { Storage } from "expo-sqlite/kv-store";
-
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [authData, setAuthData] = useState<AuthData | undefined>();
@@ -16,7 +15,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   async function loadAuthDataFromStorage() {
     try {
-      const auth = await Storage.getItem("@AuthData");
+      const auth = await AsyncStorage.getItem("@AuthData");
       if (auth) {
         setAuthData(JSON.parse(auth));
       }
@@ -34,8 +33,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const auth = await authService.signIn(data);
       setAuthData(auth);
-      /* AsyncStorage.setItem("@AuthData", JSON.stringify(auth)); */
-      await Storage.setItem("authData", JSON.stringify(auth));
+      AsyncStorage.setItem("@AuthData", JSON.stringify(auth));
     } catch (error: any) {
       Alert.alert("Erro ao efetuar login", error.message);
     }
@@ -43,7 +41,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   async function signOut(): Promise<void> {
     setAuthData(undefined);
-    Storage.removeItem("@AuthData");
+    AsyncStorage.removeItem("@AuthData");
   }
 
   return (
