@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     flex: 0,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
 
   error: {
@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: "#000080",
   },
-
 });
 
 export { styles };

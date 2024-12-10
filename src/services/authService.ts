@@ -8,17 +8,17 @@ async function signIn(data: SignInProp): Promise<AuthData> {
       if (!data.email || !data.password) {
         throw new Error("E-mail e senha são obrigatórios");
       }
-      if (data.email == "caio@email.com" && data.password == "123456") {
+      if (data.email === "caio@email.com" && data.password === "123456") {
         resolve({
-          token: 'token',
+          token: "token",
           email: data.email,
-          name: 'Caio',
+          name: "Caio",
         });
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         reject(
-          new Error(error.response.data.message || "Erro de autenticação")
+          new Error(error.response.data.message || "Erro de autenticação"),
         );
       } else {
         reject(new Error("Erro desconhecido"));

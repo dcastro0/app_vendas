@@ -1,16 +1,22 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, Pressable, Alert, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '@/hooks/useAuth';
+import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Pressable,
+  Alert,
+  ScrollView,
+} from "react-native";
+import { useAuth } from "@/hooks/useAuth";
 
 const AccountScreen = () => {
-  const navigation = useNavigation();
   const { signOut } = useAuth();
 
   // Função para logar o usuário
   const handleLogout = () => {
-    signOut()
-  }
+    signOut();
+  };
   // Função para deletar a conta
   const handleDeleteAccount = () => {
     Alert.alert(
@@ -18,8 +24,8 @@ const AccountScreen = () => {
       "Tem certeza que deseja deletar sua conta? Esta ação é irreversível.",
       [
         { text: "Cancelar", style: "cancel" },
-        { text: "Deletar", onPress: () => console.log('Conta deletada') }, // Substitua com sua lógica
-      ]
+        { text: "Deletar", onPress: () => console.log("Conta deletada") }, // Substitua com sua lógica
+      ],
     );
   };
 
@@ -28,7 +34,7 @@ const AccountScreen = () => {
       {/* Foto de Perfil e Nome */}
       <View style={styles.profileContainer}>
         <Image
-          source={{ uri: 'https://www.example.com/profile-picture.jpg' }} // Substitua pela URL da foto do perfil do usuário
+          source={{ uri: "https://www.example.com/profile-picture.jpg" }} // Substitua pela URL da foto do perfil do usuário
           style={styles.profileImage}
         />
         <Text style={styles.profileName}>John Doe</Text>
@@ -41,12 +47,10 @@ const AccountScreen = () => {
         <Text style={styles.infoText}>Telefone: +55 11 98765-4321</Text>
       </View>
 
-
-
       {/* Histórico de Transações */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Histórico de Transações</Text>
-        <Pressable style={styles.option} >
+        <Pressable style={styles.option}>
           <Text style={styles.optionText}>Ver Transações</Text>
         </Pressable>
       </View>
@@ -70,7 +74,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   profileContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 30,
   },
   profileImage: {
@@ -81,46 +85,46 @@ const styles = StyleSheet.create({
   },
   profileName: {
     fontSize: 22,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   section: {
     marginBottom: 20,
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   infoText: {
     fontSize: 16,
-    color: '#555',
+    color: "#555",
   },
   option: {
     paddingVertical: 10,
   },
   optionText: {
     fontSize: 16,
-    color: '#007BFF',
+    color: "#007BFF",
   },
   dangerButton: {
-    backgroundColor: '#FF6347',
+    backgroundColor: "#FF6347",
     paddingVertical: 15,
     borderRadius: 8,
     marginBottom: 10,
   },
   dangerButtonText: {
-    color: 'white',
-    textAlign: 'center',
+    color: "white",
+    textAlign: "center",
     fontSize: 18,
   },
   logoutButton: {
-    backgroundColor: '#28A745',
+    backgroundColor: "#28A745",
     paddingVertical: 15,
     borderRadius: 8,
   },
   logoutButtonText: {
-    color: 'white',
-    textAlign: 'center',
+    color: "white",
+    textAlign: "center",
     fontSize: 18,
   },
 });

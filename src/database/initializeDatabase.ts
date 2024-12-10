@@ -3,7 +3,6 @@ import { type SQLiteDatabase } from "expo-sqlite";
 const initializeDatabase = async (database: SQLiteDatabase) => {
   try {
     await database.execAsync(`
-      DROP TABLE IF EXISTS payments;
       CREATE TABLE IF NOT EXISTS payments (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         value TEXT NOT NULL,
@@ -18,6 +17,6 @@ const initializeDatabase = async (database: SQLiteDatabase) => {
   } catch (error) {
     console.error("Erro ao criar tabela 'payments':", error);
   }
-}
+};
 
 export default initializeDatabase;

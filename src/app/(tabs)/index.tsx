@@ -1,17 +1,28 @@
 import React from "react";
-import { Pressable, View, Alert, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
+import {
+  View,
+  Alert,
+  Text,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { TextInputMask } from "react-native-masked-text";
 import { RadioButton } from "react-native-paper";
 import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from '@hookform/resolvers/zod';
+import { zodResolver } from "@hookform/resolvers/zod";
 import { styles } from "../../styles/styles";
 import { PaymentSchema, PaymentFormData } from "../../schema/schema";
 import { usePaymentDb } from "@/database/usePayamentDb";
-import tw from "twrnc"
+import tw from "twrnc";
 import Button from "@/components/Button";
 
 const App = () => {
-  const { control, handleSubmit, formState: { errors }, reset } = useForm<PaymentFormData>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<PaymentFormData>({
     resolver: zodResolver(PaymentSchema),
   });
 
@@ -23,7 +34,10 @@ const App = () => {
       const response = await paymentDb.insertPayment(data);
       showValueAlert(data, response.insertRowId);
     } catch (error) {
-      Alert.alert("Erro", "Não foi possível salvar os dados.");
+      Alert.alert(
+        "Erro",
+        "Não foi possível salvar os dados." + (error as Error).message,
+      );
     }
   }
 
@@ -34,32 +48,28 @@ const App = () => {
       [
         {
           text: "OK",
-          onPress: () => reset()
-        }
-      ]
+          onPress: () => reset(),
+        },
+      ],
     );
   };
 
   // Alerta de confirmação antes de realizar a transação
   const confirmacaoAlert = () => {
-    Alert.alert(
-      "Confirmação",
-      "Deseja confirmar o pagamento?",
-      [
-        {
-          text: "Cancelar",
-          style: "cancel"
-        },
-        {
-          text: "Confirmar",
-          onPress: () => handleSubmit(create)()
-        }
-      ]
-    );
+    Alert.alert("Confirmação", "Deseja confirmar o pagamento?", [
+      {
+        text: "Cancelar",
+        style: "cancel",
+      },
+      {
+        text: "Confirmar",
+        onPress: () => handleSubmit(create)(),
+      },
+    ]);
   };
 
   const handleKeyboardDismiss = () => {
-    Keyboard.dismiss();  // Close the keyboard when submitting the form
+    Keyboard.dismiss(); // Close the keyboard when submitting the form
   };
 
   return (
@@ -80,17 +90,16 @@ const App = () => {
             />
           )}
         />
-        {errors.value && <Text style={styles.error}>{errors.value.message}</Text>}
+        {errors.value && (
+          <Text style={styles.error}>{errors.value.message}</Text>
+        )}
 
         <Text>Selecione o método de pagamento:</Text>
         <Controller
           control={control}
           name="payMethod"
           render={({ field: { onChange, value } }) => (
-            <RadioButton.Group
-              onValueChange={onChange}
-              value={value}
-            >
+            <RadioButton.Group onValueChange={onChange} value={value}>
               <View style={styles.radioGroup}>
                 <RadioButton value="pix" />
                 <Text>Pix</Text>
@@ -104,9 +113,11 @@ const App = () => {
             </RadioButton.Group>
           )}
         />
-        {errors.payMethod && <Text style={styles.error}>{errors.payMethod.message}</Text>}
+        {errors.payMethod && (
+          <Text style={styles.error}>{errors.payMethod.message}</Text>
+        )}
 
-        <Button onPress={handleSubmit(create)} >Enviar</Button>
+        <Button onPress={handleSubmit(create)}>Enviar</Button>
       </View>
     </TouchableWithoutFeedback>
   );

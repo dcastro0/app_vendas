@@ -1,7 +1,8 @@
-import { useAuth } from '@/hooks/useAuth';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Redirect, Tabs } from 'expo-router';
-import { Text, View } from 'react-native';
+import React from "react";
+import { useAuth } from "@/hooks/useAuth";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Redirect, Tabs } from "expo-router";
+import { Text, View } from "react-native";
 
 export default function TabLayout() {
   const { authData, loading } = useAuth();
@@ -17,26 +18,32 @@ export default function TabLayout() {
     return <Redirect href="/login" />;
   }
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: 'blue' }}>
+    <Tabs screenOptions={{ tabBarActiveTintColor: "blue" }}>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
+          title: "Home",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={28} name="home" color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="lista"
         options={{
-          title: 'Lista',
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name="list" color={color} />,
+          title: "Lista",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={28} name="list" color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="usuario"
         options={{
-          title: 'Usuário',
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name="user" color={color} />,
+          title: "Usuário",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={28} name="user" color={color} />
+          ),
         }}
       />
     </Tabs>

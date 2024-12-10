@@ -1,9 +1,9 @@
 import { usePaymentDb } from "@/database/usePayamentDb";
 import { PaymentFormData } from "@/schema/schema";
 import { styles } from "@/styles/styles";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Feather } from "@expo/vector-icons";
-import { RefreshControl, FlatList, View, Text, Pressable } from "react-native";
+import { RefreshControl, FlatList, View, Text } from "react-native";
 import tw from "twrnc";
 import Button from "@/components/Button";
 import ListRow from "@/components/ListRow";
@@ -12,22 +12,25 @@ const Lista = () => {
   const [refreshing, setRefreshing] = useState(false);
   const paymentDb = usePaymentDb();
 
-  const getPayments = async () => {
+  const getPayments = useCallback(async () => {
     setRefreshing(true);
     const response = await paymentDb.getPayments();
     setShow(response as PaymentFormData[]);
     setRefreshing(false);
-  };
+  }, [paymentDb]);
 
   useEffect(() => {
     getPayments();
-  }, []);
+  }, [getPayments]);
 
   if (show.length === 0) {
     return (
       <View style={styles.container}>
         <Text style={tw`text-2xl`}>Sem itens</Text>
-        <Button onPress={getPayments}>Regarregar<Feather name="refresh-cw" size={24} color="white" /></Button>
+        <Button onPress={getPayments}>
+          Regarregar
+          <Feather name="refresh-cw" size={24} color="white" />
+        </Button>
       </View>
     );
   }
@@ -35,9 +38,11 @@ const Lista = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getPayments} />}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={getPayments} />
+        }
         data={[...show].reverse()}
-        keyExtractor={(item) => (item.id?.toString() ?? '')}
+        keyExtractor={(item) => item.id?.toString() ?? ""}
         renderItem={({ item }) => (
           <View style={styles.card} key={item.id}>
             <ListRow>{item.id}</ListRow>

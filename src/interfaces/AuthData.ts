@@ -1,4 +1,3 @@
-
 /**
  * Interface que define o formato dos dados de autenticação do usuário.
  */

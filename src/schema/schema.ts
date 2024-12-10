@@ -5,10 +5,14 @@ export type PayMethodType = z.infer<typeof PayMethodSchema>;
 
 const PaymentSchema = z.object({
   id: z.number().optional(),
-  value: z.string()
+  value: z
+    .string()
     .min(1, "O valor é obrigatório")
     .regex(/^R\$\d{1,3}(\.\d{3})*(,\d{2})$/, "Valor inválido")
-    .refine((val) => !/^R\$0{1,3}(\.0{3})*(,00)$/.test(val), "Valor não pode ser R$0,00"),
+    .refine(
+      (val) => !/^R\$0{1,3}(\.0{3})*(,00)$/.test(val),
+      "Valor não pode ser R$0,00",
+    ),
   payMethod: PayMethodSchema,
   createdAt: z.string().optional(),
 });
