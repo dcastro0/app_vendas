@@ -54,7 +54,6 @@ const App = () => {
     );
   };
 
-  // Alerta de confirmação antes de realizar a transação
   const confirmacaoAlert = () => {
     Alert.alert("Confirmação", "Deseja confirmar o pagamento?", [
       {
@@ -69,7 +68,7 @@ const App = () => {
   };
 
   const handleKeyboardDismiss = () => {
-    Keyboard.dismiss(); // Close the keyboard when submitting the form
+    Keyboard.dismiss();
   };
 
   return (
@@ -84,14 +83,14 @@ const App = () => {
               type="money"
               value={value}
               onChangeText={onChange}
-              style={tw`border border-gray-400 p-2 rounded-md text-8xl text-center w-9/10 h-30`}
+              style={tw`border border-gray-400 ${errors.value ? "border-red-400" : ""} p-2 rounded-md text-8xl text-center w-9/10 h-30`}
               placeholder="R$0,00"
               textAlign="right"
             />
           )}
         />
         {errors.value && (
-          <Text style={styles.error}>{errors.value.message}</Text>
+          <Text style={tw`text-red-500 text-md`}>{errors.value.message}</Text>
         )}
 
         <Text>Selecione o método de pagamento:</Text>
@@ -114,7 +113,9 @@ const App = () => {
           )}
         />
         {errors.payMethod && (
-          <Text style={styles.error}>{errors.payMethod.message}</Text>
+          <Text style={tw`text-red-500 text-md`}>
+            {errors.payMethod.message}
+          </Text>
         )}
 
         <Button onPress={handleSubmit(create)}>Enviar</Button>
