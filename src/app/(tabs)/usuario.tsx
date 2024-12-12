@@ -31,10 +31,9 @@ const AccountScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {/* Foto de Perfil e Nome */}
       <View style={styles.profileContainer}>
         <Image
-          source={{ uri: "https://www.example.com/profile-picture.jpg" }} // Substitua pela URL da foto do perfil do usuário
+          source={{ uri: "https://www.example.com/profile-picture.jpg" }}
           style={styles.profileImage}
         />
         <Text style={styles.profileName}>John Doe</Text>

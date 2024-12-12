@@ -10,8 +10,8 @@ import { TextInputMask } from "react-native-masked-text";
 import { RadioButton } from "react-native-paper";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { styles } from "../../styles/styles";
-import { PaymentSchema, PaymentFormData } from "../../schema/schema";
+
+import { PaymentSchema, PaymentFormData } from "@/schema/schema";
 import { usePaymentDb } from "@/database/usePayamentDb";
 import tw from "twrnc";
 import Button from "@/components/Button";
@@ -73,7 +73,7 @@ const App = () => {
 
   return (
     <TouchableWithoutFeedback onPress={handleKeyboardDismiss}>
-      <View style={styles.container}>
+      <View style={tw`flex p-6 justify-center items-center gap-6 mt-20`}>
         <Text>Insira o valor:</Text>
         <Controller
           control={control}
@@ -83,7 +83,7 @@ const App = () => {
               type="money"
               value={value}
               onChangeText={onChange}
-              style={tw`border border-gray-400 ${errors.value ? "border-red-400" : ""} p-2 rounded-md text-8xl text-center w-9/10 h-30`}
+              style={tw`border border-gray-400  p-2 rounded-md text-8xl text-center w-9/10 h-30`}
               placeholder="R$0,00"
               textAlign="right"
             />
@@ -99,7 +99,7 @@ const App = () => {
           name="payMethod"
           render={({ field: { onChange, value } }) => (
             <RadioButton.Group onValueChange={onChange} value={value}>
-              <View style={styles.radioGroup}>
+              <View style={tw`flex-row items-center`}>
                 <RadioButton value="pix" />
                 <Text>Pix</Text>
 

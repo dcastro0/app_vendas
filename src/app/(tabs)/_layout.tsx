@@ -18,9 +18,12 @@ export default function TabLayout() {
     return <Redirect href="/login" />;
   }
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: "blue" }}>
+    <Tabs
+      screenOptions={{ tabBarActiveTintColor: "blue" }}
+      initialRouteName="(venda)/index"
+    >
       <Tabs.Screen
-        name="index"
+        name="(venda)/index"
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
