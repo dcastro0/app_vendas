@@ -43,6 +43,7 @@ const Lista = () => {
             <ListRow>{item.value}</ListRow>
             <ListRow>{item.payMethod}</ListRow>
             <ListRow>{item.createdAt}</ListRow>
+            <ListRow>{item.id_usuario}</ListRow>
           </View>
         )}
         ListEmptyComponent={renderEmptyList}

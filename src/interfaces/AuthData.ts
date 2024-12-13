@@ -2,13 +2,13 @@
  * Interface que define o formato dos dados de autenticação do usuário.
  */
 interface AuthData {
-  id?: number;
+  id: number;
   /** Token de autenticação. */
   token: string;
   /** Nome de usuário (opcional). */
-  email?: string;
+  email: string;
   /** Nome do usuário (opcional). */
-  name?: string;
+  name: string;
 }
 
 export { AuthData };

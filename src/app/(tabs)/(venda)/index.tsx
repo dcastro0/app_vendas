@@ -32,8 +32,11 @@ const App = () => {
     confirmacaoAlert();
     try {
       const response = await paymentDb.insertPayment(data);
+      console.log(response);
+
       showValueAlert(data, response.insertRowId);
     } catch (error) {
+      console.log(error);
       Alert.alert(
         "Erro",
         "Não foi possível salvar os dados." + (error as Error).message,
