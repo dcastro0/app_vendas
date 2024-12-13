@@ -14,7 +14,7 @@ const loginSchema = z.object({
     .min(3, { message: "O nome de usuário deve ter pelo menos 3 caracteres." }),
   password: z
     .string()
-    .min(6, { message: "A senha deve ter pelo menos 6 caracteres." }),
+    .min(3, { message: "A senha deve ter pelo menos 6 caracteres." }),
 });
 
 // Tipagem do formulário

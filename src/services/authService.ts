@@ -8,13 +8,20 @@ async function signIn(data: SignInProp): Promise<AuthData> {
       if (!data.email || !data.password) {
         throw new Error("E-mail e senha são obrigatórios");
       }
-      if (data.email === "caio@email.com" && data.password === "123456") {
-        resolve({
-          token: "token",
+
+      const response = await axios.post(
+        "https://extratormaps.com/delivery-interativo/sistema/api.php",
+        {
           email: data.email,
-          name: "Caio",
-        });
-      }
+          password: data.password,
+        },
+      );
+      return resolve({
+        token: "response.data.token",
+        id: response.data.user.id,
+        name: response.data.user.nome,
+        email: data.email,
+      });
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         reject(

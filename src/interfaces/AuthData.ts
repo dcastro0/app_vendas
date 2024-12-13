@@ -2,6 +2,7 @@
  * Interface que define o formato dos dados de autenticação do usuário.
  */
 interface AuthData {
+  id?: number;
   /** Token de autenticação. */
   token: string;
   /** Nome de usuário (opcional). */

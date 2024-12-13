@@ -11,7 +11,7 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 
 const AccountScreen = () => {
-  const { signOut } = useAuth();
+  const { signOut, authData } = useAuth();
 
   // Função para logar o usuário
   const handleLogout = () => {
@@ -36,14 +36,13 @@ const AccountScreen = () => {
           source={{ uri: "https://www.example.com/profile-picture.jpg" }}
           style={styles.profileImage}
         />
-        <Text style={styles.profileName}>John Doe</Text>
+        <Text style={styles.profileName}>{authData?.name}</Text>
       </View>
 
       {/* Informações do Usuário */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Informações de Conta</Text>
-        <Text style={styles.infoText}>Email: john.doe@example.com</Text>
-        <Text style={styles.infoText}>Telefone: +55 11 98765-4321</Text>
+        <Text style={styles.infoText}>Email: {authData?.email}</Text>
       </View>
 
       {/* Histórico de Transações */}
