@@ -93,7 +93,7 @@ const App = () => {
           )}
         />
         {errors.value && (
-          <Text style={tw`text-red-500 text-md`}>{errors.value.message}</Text>
+          <Text style={tw`text-red-500 text-sm`}>{errors.value.message}</Text>
         )}
 
         <Text>Selecione o método de pagamento:</Text>
@@ -116,7 +116,7 @@ const App = () => {
           )}
         />
         {errors.payMethod && (
-          <Text style={tw`text-red-500 text-md`}>
+          <Text style={tw`text-red-500 text-sm`}>
             {errors.payMethod.message}
           </Text>
         )}
