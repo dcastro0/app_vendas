@@ -6,7 +6,7 @@ interface ListRowProps extends TextProps {
 }
 const ListRow: React.FC<ListRowProps> = ({ children, ...props }) => {
   return (
-    <Text style={tw`text-white font-bold text-lg`} {...props}>
+    <Text style={tw`text-white font-bold text-sm`} {...props}>
       {children}
     </Text>
   );

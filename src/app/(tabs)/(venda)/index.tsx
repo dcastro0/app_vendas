@@ -15,6 +15,8 @@ import { PaymentSchema, PaymentFormData } from "@/schema/schema";
 import { usePaymentDb } from "@/database/usePayamentDb";
 import tw from "twrnc";
 import Button from "@/components/Button";
+import { useRouter } from "expo-router";
+import { showValueAlert, confirmacaoAlert } from "@/components/Alerts";
 
 const App = () => {
   const {
@@ -22,58 +24,48 @@ const App = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm<PaymentFormData>({
     resolver: zodResolver(PaymentSchema),
   });
 
   const paymentDb = usePaymentDb();
+  const router = useRouter();
+
+  const value = watch("value");
+  const payMethod = watch("payMethod");
 
   async function create(data: PaymentFormData) {
-    confirmacaoAlert();
+    confirmacaoAlert(handleSubmit(create));
     try {
       const response = await paymentDb.insertPayment(data);
       console.log(response);
 
-      showValueAlert(data, response.insertRowId);
+      showValueAlert(data, response.insertRowId, reset);
     } catch (error) {
       console.log(error);
       Alert.alert(
         "Erro",
-        "Não foi possível salvar os dados." + (error as Error).message,
+        "Não foi possível salvar os dados." + (error as Error).message
       );
     }
   }
 
-  const showValueAlert = (data: PaymentFormData, response: string) => {
-    Alert.alert(
-      "Dados Venda",
-      `ID: ${response}\nValor: ${data.value}\nMétodo de pagamento: ${data.payMethod}\nData: ${new Date().toLocaleDateString()}\nHora: ${new Date().toLocaleTimeString()}`,
-      [
-        {
-          text: "OK",
-          onPress: () => reset(),
-        },
-      ],
-    );
-  };
 
-  const confirmacaoAlert = () => {
-    Alert.alert("Confirmação", "Deseja confirmar o pagamento?", [
-      {
-        text: "Cancelar",
-        style: "cancel",
-      },
-      {
-        text: "Confirmar",
-        onPress: () => handleSubmit(create)(),
-      },
-    ]);
-  };
+
+
 
   const handleKeyboardDismiss = () => {
     Keyboard.dismiss();
   };
 
+  const troco = () => {
+    router.push({
+      pathname: "/troco/[valor]",
+      params: { valor: value },
+    });
+    reset();
+  }
   return (
     <TouchableWithoutFeedback onPress={handleKeyboardDismiss}>
       <View style={tw`flex p-6 justify-center items-center gap-6 mt-20`}>
@@ -86,7 +78,7 @@ const App = () => {
               type="money"
               value={value}
               onChangeText={onChange}
-              style={tw`border border-gray-400  p-2 rounded-md text-8xl text-center w-9/10 h-30`}
+              style={tw`border border-gray-400 p-2 rounded-md text-8xl text-center w-9/10 h-30`}
               placeholder="R$0,00"
               textAlign="right"
             />
@@ -116,12 +108,11 @@ const App = () => {
           )}
         />
         {errors.payMethod && (
-          <Text style={tw`text-red-500 text-sm`}>
-            {errors.payMethod.message}
-          </Text>
+          <Text style={tw`text-red-500 text-sm`}>{errors.payMethod.message}</Text>
         )}
-
-        <Button onPress={handleSubmit(create)}>Enviar</Button>
+        <Button onPress={payMethod === "dinheiro" ? troco : handleSubmit(create)}>
+          Enviar
+        </Button>
       </View>
     </TouchableWithoutFeedback>
   );
