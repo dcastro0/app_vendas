@@ -10,7 +10,9 @@ const initializeDatabase = async (database: SQLiteDatabase) => {
         payMethod TEXT NOT NULL,
         createdAt DATETIME NOT NULL,
         sincronized INTEGER DEFAULT 0,  
-        id_usuario INTEGER NOT NULL
+        id_usuario INTEGER NOT NULL,
+        total_pago REAL NOT NULL,
+        troco REAL NOT NULL
       );
     `);
     console.log("Tabela 'payments' criada ou já existe.");

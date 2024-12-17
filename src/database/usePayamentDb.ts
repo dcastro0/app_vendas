@@ -7,19 +7,22 @@ export function usePaymentDb() {
   const { authData } = useAuth();
   async function insertPayment(data: PaymentFormData) {
     const statament = await database.prepareAsync(
-      "INSERT INTO payments (value, payMethod, createdAt, id_usuario) VALUES ($value, $payMethod, $created_at, $id_usuario)",
+      "INSERT INTO payments (value, payMethod, createdAt, id_usuario, troco, total_pago) VALUES (?, ?, ?, ?, ?, ?)",
     );
+    const { value, payMethod } = data;
     try {
       if (!authData?.id) {
         console.log("Usuário não autenticado");
         throw new Error("Usuário não autenticado");
       }
-      const response = await statament.executeAsync({
-        $value: data.value,
-        $payMethod: data.payMethod,
-        $created_at: new Date().toLocaleString(),
-        $id_usuario: authData.id,
-      });
+      const response = await statament.executeAsync([
+        value,
+        payMethod,
+        new Date().toLocaleString(),
+        authData.id,
+        payMethod === "dinheiro" ? data.troco ?? 0 : 0,
+        payMethod === "dinheiro" ? data.total_pago ?? data.value : data.value
+      ]);
       console.log(response);
 
       const insertRowId = response.lastInsertRowId.toLocaleString();
