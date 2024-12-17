@@ -6,11 +6,11 @@ const initializeDatabase = async (database: SQLiteDatabase) => {
       DROP TABLE IF EXISTS payments;
       CREATE TABLE IF NOT EXISTS payments (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        value TEXT NOT NULL,
+        value REAL NOT NULL,
         payMethod TEXT NOT NULL,
         createdAt DATETIME NOT NULL,
-        sincronized INTEGER DEFAULT 0,  
-        id_usuario INTEGER NOT NULL,
+        sync INTEGER DEFAULT 0,  
+        id_usuario INTEGER NOT NULL, 
         total_pago REAL NOT NULL,
         troco REAL NOT NULL
       );

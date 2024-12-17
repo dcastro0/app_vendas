@@ -6,7 +6,6 @@ import { RefreshControl, FlatList, View, Text } from "react-native";
 import tw from "twrnc";
 import Button from "@/components/Button";
 import ListRow from "@/components/ListRow";
-import { List } from "react-native-paper";
 
 const Lista = () => {
   const [show, setShow] = useState<PaymentFormData[]>([]);
@@ -50,7 +49,7 @@ const Lista = () => {
         data={[...show].reverse()}
         keyExtractor={(item) => item.id?.toString() ?? ""}
         renderItem={({ item }) => (
-          <View style={tw`flex-row justify-between p-1 w-full border border-white  bg-violet-700 `} key={item.id}>
+          <View style={tw`flex-row justify-between p-1 w-full border border-white  ${item!.sync === 0 ? 'bg-violet-700' : 'bg-green-500'} `} key={item.id}>
             <ListRow>{item.id}</ListRow>
             <ListRow>{item.value}</ListRow>
             <ListRow>{item.payMethod}</ListRow>

@@ -51,10 +51,6 @@ const App = () => {
     }
   }
 
-
-
-
-
   const handleKeyboardDismiss = () => {
     Keyboard.dismiss();
   };

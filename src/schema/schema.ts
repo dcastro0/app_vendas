@@ -16,7 +16,7 @@ const PaymentSchema = z.object({
   payMethod: PayMethodSchema,
   createdAt: z.string().optional(),
   id_usuario: z.number().optional(),
-  sincronized: z.boolean().optional(),
+  sync: z.number().optional(),
   total_pago: z.number().optional(),
   troco: z.number().optional(),
 });

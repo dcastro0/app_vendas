@@ -16,7 +16,7 @@ export function usePaymentDb() {
         throw new Error("Usuário não autenticado");
       }
       const response = await statament.executeAsync([
-        value,
+        parseFloat(value.replace("R$", "").replace(",", ".").trim()),
         payMethod,
         new Date().toLocaleString(),
         authData.id,
@@ -43,5 +43,26 @@ export function usePaymentDb() {
       throw error;
     }
   }
-  return { insertPayment, getPayments };
+  async function getPaymentsNoSync() {
+    try {
+      const query = "SELECT * FROM payments WHERE sync = 0";
+      const response = await database.getAllAsync(query);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+  const updateSync = async (id: number) => {
+    const statament = await database.prepareAsync(`UPDATE payments SET sync = 1 WHERE id = ?`);
+    try {
+      if (!id) {
+        throw new Error("ID é obrigatório");
+      }
+      const response = await statament.executeAsync([id]);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+  return { insertPayment, getPayments, getPaymentsNoSync, updateSync };
 }
