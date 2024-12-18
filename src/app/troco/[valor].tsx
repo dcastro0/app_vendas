@@ -12,7 +12,7 @@ const Troco = () => {
   const { valor } = useLocalSearchParams();
   const [valorRecebido, setValorRecebido] = useState<string>("");
   const [error, setError] = useState<string>("");
-
+  const [trocoCalculado, setTrocoCalculado] = useState<boolean>(false);
   const [troco, setTroco] = useState<number>(0);
 
   const data: PaymentFormData = {
@@ -25,6 +25,19 @@ const Troco = () => {
   async function create(data: PaymentFormData) {
     confirmacaoAlert(() => create(data));
     try {
+      if (!data.total_pago) {
+        Alert.alert("Erro", "Informe o valor recebido.");
+        return;
+      }
+      if (data.total_pago < parseFloat(data.value.replace('R$', '').replace(',', '.'))) {
+        Alert.alert("Erro", "Valor recebido menor que o valor da compra.");
+        return;
+      }
+      if (!trocoCalculado) {
+        Alert.alert("Erro", "Calcule o troco antes de salvar.");
+        return;
+      }
+
       const response = await paymentDb.insertPayment(data);
       console.log(response);
 
@@ -52,6 +65,7 @@ const Troco = () => {
     }
     setError("");
     setTroco(valorRecebidoNum - valorCompra);
+    setTrocoCalculado(true);
   };
 
   return (

@@ -5,6 +5,7 @@ import tw from "twrnc";
 import sync from "@/services/sync";
 import { usePaymentDb } from "@/database/usePayamentDb";
 import { Vendas } from "@/schema/schemaVenda";
+import { Feather } from "@expo/vector-icons";
 
 const AccountScreen = () => {
   const { signOut, authData } = useAuth();
@@ -45,29 +46,27 @@ const AccountScreen = () => {
 
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.profileContainer}>
-        <Image
-          source={{ uri: "https://www.example.com/profile-picture.jpg" }}
-          style={styles.profileImage}
-        />
-        <Text style={styles.profileName}>{authData?.name}</Text>
+    <ScrollView contentContainerStyle={tw`flex-grow p-4`}>
+      <View style={tw`items-center`}>
+        <Feather name="user" size={100} color="black" style={tw`p-2 bg-white rounded-full`} />
+        <Text style={tw`font-bold text-3xl`}>{authData?.name}</Text>
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Informações de Conta</Text>
-        <Text style={styles.infoText}>Email: {authData?.email}</Text>
+      <View style={tw`py-8 gap-2`}>
+        <Text style={tw`font-bold text-2xl`}>Informações de Conta</Text>
+        <Text style={tw`text-lg text-gray-600`}>Email: {authData?.email}</Text>
       </View>
 
-      <View style={styles.section}>
-        <Pressable style={styles.logoutButton} onPress={handleLogout}>
-          <Text style={styles.logoutButtonText}>Sair</Text>
-        </Pressable>
+      <View style={tw`py-8 gap-2`}>
+
         <Pressable
           style={tw`bg-green-500 p-4 rounded-md`}
           onPress={handleSync}
         >
-          <Text style={tw`text-white text-center`}>Sincronizar</Text>
+          <Text style={tw`text-white text-center font-bold text-xl`}>Sincronizar</Text>
+        </Pressable>
+        <Pressable style={tw`bg-red-500 p-4 rounded-md`} onPress={handleLogout}>
+          <Text style={tw`text-white font-bold text-center text-xl`}>Sair</Text>
         </Pressable>
       </View>
     </ScrollView>
