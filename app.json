@@ -2,7 +2,7 @@
   "expo": {
     "name": "pvd_app",
     "slug": "pvd_app",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -20,7 +20,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.dcastro0.pvd_app"
     },
     "web": {
       "bundler": "metro",
@@ -33,6 +34,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "c4a26f6a-15d1-478c-812b-7d2c7ff41378"
+      }
     }
   }
 }
