@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AuthProvider } from "@/contexts/Auth";
 import initializeDatabase from "@/database/initializeDatabase";
-import { router, Stack } from "expo-router";
+import { router, SplashScreen, Stack } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
 import { Pressable, Text } from "react-native";
 
 const Layout = () => {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, [2000]);
   return (
     <SQLiteProvider databaseName="sqlite.db" onInit={initializeDatabase}>
       <AuthProvider>
