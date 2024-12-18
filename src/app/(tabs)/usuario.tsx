@@ -6,6 +6,7 @@ import sync from "@/services/sync";
 import { usePaymentDb } from "@/database/usePayamentDb";
 import { Vendas } from "@/schema/schemaVenda";
 import { Feather } from "@expo/vector-icons";
+import { set } from "zod";
 
 const AccountScreen = () => {
   const { signOut, authData } = useAuth();
@@ -40,6 +41,8 @@ const AccountScreen = () => {
     } catch (error) {
       console.log(error);
       Alert.alert("Erro", "Falha ao sincronizar os dados.");
+    } finally {
+      setData([]);
     }
   };
 

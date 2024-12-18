@@ -18,7 +18,7 @@ export function usePaymentDb() {
       const response = await statament.executeAsync([
         parseFloat(value.replace("R$", "").replace(",", ".").trim()),
         payMethod,
-        new Date().toLocaleString(),
+        new Date().toISOString(),
         authData.id,
         payMethod === "dinheiro" ? data.troco ?? 0 : 0,
         payMethod === "dinheiro" ? data.total_pago ?? data.value : data.value
