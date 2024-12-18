@@ -73,47 +73,4 @@ const AccountScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    padding: 20,
-  },
-  profileContainer: {
-    alignItems: "center",
-    marginBottom: 30,
-  },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 10,
-  },
-  profileName: {
-    fontSize: 22,
-    fontWeight: "bold",
-  },
-  section: {
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  infoText: {
-    fontSize: 16,
-    color: "#555",
-  },
-  logoutButton: {
-    backgroundColor: "#28A745",
-    paddingVertical: 15,
-    borderRadius: 8,
-  },
-  logoutButtonText: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 18,
-  },
-});
-
 export default AccountScreen;
