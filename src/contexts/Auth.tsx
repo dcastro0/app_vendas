@@ -5,7 +5,9 @@ import { AuthContextData, SignInProp } from "@/interfaces/AuthContextData";
 import { AuthData } from "@/interfaces/AuthData";
 import { AuthProviderProps } from "@/interfaces/AuthProviderProps";
 import { authService } from "@/services/authService";
+
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
+
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [authData, setAuthData] = useState<AuthData | undefined>();
   const [loading, setLoading] = useState(true);
@@ -20,10 +22,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setAuthData(JSON.parse(auth));
       }
     } catch (error) {
-      console.error(
-        "Erro ao carregar dados de autenticação do armazenamento:",
-        error,
-      );
+      throw new Error("Erro ao carregar dados de autenticação");
     } finally {
       setLoading(false);
     }

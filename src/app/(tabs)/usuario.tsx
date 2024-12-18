@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, Image, StyleSheet, Pressable, Alert, ScrollView } from "react-native";
+import { View, Text, Pressable, Alert, ScrollView } from "react-native";
 import { useAuth } from "@/hooks/useAuth";
 import tw from "twrnc";
 import sync from "@/services/sync";
 import { usePaymentDb } from "@/database/usePayamentDb";
 import { Vendas } from "@/schema/schemaVenda";
 import { Feather } from "@expo/vector-icons";
-import { set } from "zod";
 
 const AccountScreen = () => {
   const { signOut, authData } = useAuth();
@@ -22,7 +21,6 @@ const AccountScreen = () => {
   }
   const handleSync = async () => {
     await getData();
-    console.log("Data to sync:", data);
     if (data.length === 0) {
       Alert.alert("Erro", "Nenhum pagamento para sincronizar.");
       return;
@@ -33,13 +31,11 @@ const AccountScreen = () => {
         try {
           await updateSync(item.id);
         } catch (error) {
-          console.log(error);
           Alert.alert("Erro", "Falha ao atualizar o status de sincronização.");
         }
       });
       Alert.alert("Sucesso", "Dados sincronizados com sucesso.");
     } catch (error) {
-      console.log(error);
       Alert.alert("Erro", "Falha ao sincronizar os dados.");
     } finally {
       setData([]);

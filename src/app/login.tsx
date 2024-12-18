@@ -17,11 +17,7 @@ const loginSchema = z.object({
     .min(3, { message: "A senha deve ter pelo menos 6 caracteres." }),
 });
 
-// Tipagem do formulário
-type LoginFormData = {
-  email: string;
-  password: string;
-};
+type LoginFormData = typeof loginSchema._input;
 
 const LoginScreen = () => {
   const { signIn } = useAuth();
@@ -33,8 +29,8 @@ const LoginScreen = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    signIn(data);
+  const onSubmit = async (data: LoginFormData) => {
+    await signIn(data);
     router.replace("/");
   };
 

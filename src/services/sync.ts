@@ -16,7 +16,6 @@ async function sync(data: Vendas[]): Promise<any> {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const axiosError = error as AxiosError;
-      console.error(axiosError.response);
       const errorMessage = (axiosError.response?.data as { error?: string })?.error || "Erro de autenticação";
       throw new Error(errorMessage);
     } else {

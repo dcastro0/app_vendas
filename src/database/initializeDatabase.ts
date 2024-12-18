@@ -14,9 +14,8 @@ const initializeDatabase = async (database: SQLiteDatabase) => {
         troco REAL NOT NULL
       );
     `);
-    console.log("Tabela 'payments' criada ou já existe.");
   } catch (error) {
-    console.error("Erro ao criar tabela 'payments':", error);
+    throw new Error("Erro ao criar a tabela de pagamentos");
   }
 };
 

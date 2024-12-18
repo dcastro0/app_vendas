@@ -1,6 +1,5 @@
 import { usePaymentDb } from "@/database/usePayamentDb";
 import { PaymentFormData } from "@/schema/schema";
-import { styles } from "@/styles/styles";
 import { useState, useEffect } from "react";
 import { RefreshControl, FlatList, View, Text } from "react-native";
 import tw from "twrnc";
@@ -23,7 +22,7 @@ const Lista = () => {
   }, []);
 
   const renderEmptyList = () => (
-    <View style={styles.container}>
+    <View style={tw`flex justify-center items-center p-4`}>
       <Text style={tw`text-2xl`}>Nenhum item ainda!</Text>
       <Button onPress={getPayments}>Refresh</Button>
     </View>

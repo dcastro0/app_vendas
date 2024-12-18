@@ -1,7 +1,7 @@
 import React from "react";
 import { AuthProvider } from "@/contexts/Auth";
 import initializeDatabase from "@/database/initializeDatabase";
-import { Link, router, Slot, Stack } from "expo-router";
+import { router, Stack } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
 import { Pressable, Text } from "react-native";
 
