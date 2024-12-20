@@ -10,7 +10,7 @@ async function signIn(data: SignInProp): Promise<AuthData> {
       }
 
       const response = await axios.post(
-        "https://extratormaps.com/delivery-interativo/sistema/api.php",
+        "https://menu.flowsay.io/sistema/applogin.php",
         {
           email: data.email,
           password: data.password,

@@ -5,6 +5,7 @@ import {
   Text,
   TouchableWithoutFeedback,
   Keyboard,
+  Pressable,
 } from "react-native";
 import { TextInputMask } from "react-native-masked-text";
 import { RadioButton } from "react-native-paper";
@@ -87,15 +88,38 @@ const App = () => {
           name="payMethod"
           render={({ field: { onChange, value } }) => (
             <RadioButton.Group onValueChange={onChange} value={value}>
-              <View style={tw`flex-row items-center`}>
-                <RadioButton value="pix" />
-                <Text>Pix</Text>
+              <View style={tw`flex flex-row flex-wrap gap-4`}>
+                <Pressable
+                  style={tw`flex flex-row gap-2 items-center justify-center p-1`}
+                  onPress={onChange.bind(null, "Pix")}
+                >
+                  <RadioButton value="Pix" />
+                  <Text style={tw`font-bold text-lg`}>Pix</Text>
+                </Pressable>
+                <Pressable
+                  style={tw`flex flex-row gap-2 items-center justify-center p-1`}
+                  onPress={onChange.bind(null, "Dinheiro")}
+                >
+                  <RadioButton value="Dinheiro" />
+                  <Text style={tw`font-bold text-lg`}>Dinheiro</Text>
+                </Pressable>
+                <Pressable
+                  style={tw`flex flex-row gap-2 items-center justify-center p-1 `}
+                  onPress={onChange.bind(null, "Cartão de Crédito")}
+                >
+                  <RadioButton value="Cartão de Crédito" />
+                  <Text style={tw`font-bold text-lg`}>Cartão de Crédito</Text>
+                </Pressable>
 
-                <RadioButton value="dinheiro" />
-                <Text>Dinheiro</Text>
+                <Pressable
+                  style={tw`flex flex-row gap-2 items-center justify-center p-1`}
+                  onPress={onChange.bind(null, "Cartão de Débito")}
+                >
+                  <RadioButton value="Cartão de Débito" />
+                  <Text style={tw`font-bold text-lg`}>Cartão de Débito</Text>
+                </Pressable>
 
-                <RadioButton value="cartao" />
-                <Text>Cartão</Text>
+
               </View>
             </RadioButton.Group>
           )}
@@ -103,7 +127,7 @@ const App = () => {
         {errors.payMethod && (
           <Text style={tw`text-red-500 text-sm`}>{errors.payMethod.message}</Text>
         )}
-        <Button onPress={payMethod === "dinheiro" ? troco : handleSubmit(create)}>
+        <Button onPress={payMethod === "Dinheiro" ? troco : handleSubmit(create)}>
           Enviar
         </Button>
       </View>

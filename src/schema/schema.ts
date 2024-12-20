@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const PayMethodSchema = z.enum(["cartao", "dinheiro", "pix"]);
+const PayMethodSchema = z.enum(["Cartão de Crédito", "Dinheiro", "Pix", "Cartão de Débito"]);
 export type PayMethodType = z.infer<typeof PayMethodSchema>;
 
 const PaymentSchema = z.object({

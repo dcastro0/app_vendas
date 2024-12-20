@@ -8,7 +8,7 @@ async function sync(data: Vendas[]): Promise<any> {
   }
   try {
     const response = await axios.post(
-      "https://extratormaps.com/delivery-interativo/sistema/sync.php",
+      "https://menu.flowsay.io/sistema/appsync.php",
       data,
       { timeout: 5000 }
     );

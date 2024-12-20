@@ -17,7 +17,7 @@ const Troco = () => {
 
   const data: PaymentFormData = {
     value: valor as string,
-    payMethod: "dinheiro",
+    payMethod: "Dinheiro",
     troco: troco,
     total_pago: valorRecebido ? parseFloat(valorRecebido.replace('R$', '').replace(',', '.')) : 0,
   };
@@ -39,11 +39,9 @@ const Troco = () => {
       }
 
       const response = await paymentDb.insertPayment(data);
-      console.log(response);
 
       showValueAlert(data, response.insertRowId, router.back);
     } catch (error) {
-      console.log(error);
       Alert.alert(
         "Erro",
         "Não foi possível salvar os dados." + (error as Error).message

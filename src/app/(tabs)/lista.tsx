@@ -10,9 +10,22 @@ const Lista = () => {
   const [show, setShow] = useState<PaymentFormData[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const paymentDb = usePaymentDb();
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(value);
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleString('pt-BR');
+  };
+
   async function getPayments() {
     setRefreshing(true);
-    const response = await paymentDb.getPayments();
+    const response = await paymentDb.getPayments() as PaymentFormData[];
     setShow(response as PaymentFormData[]);
     setRefreshing(false);
   }
@@ -50,9 +63,9 @@ const Lista = () => {
         renderItem={({ item }) => (
           <View style={tw`flex-row justify-between p-1 w-full border border-white  ${item!.sync === 0 ? 'bg-violet-700' : 'bg-green-500'} `} key={item.id}>
             <ListRow>{item.id}</ListRow>
-            <ListRow>{item.value}</ListRow>
+            <ListRow>{formatCurrency(parseFloat(item.value))}</ListRow>
             <ListRow>{item.payMethod}</ListRow>
-            <ListRow>{item.createdAt}</ListRow>
+            <ListRow>{formatDate(item.createdAt || '')}</ListRow>
             <ListRow>{item.id_usuario}</ListRow>
           </View>
         )}

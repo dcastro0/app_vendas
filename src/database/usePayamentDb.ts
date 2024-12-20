@@ -21,8 +21,8 @@ export function usePaymentDb() {
         payMethod,
         new Date().toISOString(),
         authData.id,
-        payMethod === "dinheiro" ? data.troco ?? 0 : 0,
-        payMethod === "dinheiro" ? data.total_pago ?? data.value : data.value
+        payMethod === "Dinheiro" ? data.troco ?? 0 : 0,
+        payMethod === "Dinheiro" ? data.total_pago ?? data.value : data.value
       ]);
       const insertRowId = response.lastInsertRowId.toLocaleString();
       return { insertRowId };
@@ -35,7 +35,10 @@ export function usePaymentDb() {
 
   async function getPayments() {
     try {
-      const query = "SELECT * FROM payments";
+      if (!authData?.id) {
+        throw new Error("Usuário não autenticado");
+      }
+      const query = `SELECT * FROM payments WHERE id_usuario = ${authData.id}`;
       const response = await database.getAllAsync(query);
       return response;
     } catch (error) {
@@ -45,7 +48,10 @@ export function usePaymentDb() {
 
   async function getPaymentsNoSync() {
     try {
-      const query = "SELECT * FROM payments WHERE sync = 0";
+      if (!authData?.id) {
+        throw new Error("Usuário não autenticado");
+      }
+      const query = `SELECT * FROM payments WHERE sync = 0 AND id_usuario = ${authData.id}`;
       const response = await database.getAllAsync(query);
       return response;
     } catch (error) {
