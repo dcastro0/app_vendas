@@ -127,7 +127,7 @@ const App = () => {
         {errors.payMethod && (
           <Text style={tw`text-red-500 text-sm`}>{errors.payMethod.message}</Text>
         )}
-        <Button onPress={payMethod === "Dinheiro" ? troco : handleSubmit(create)}>
+        <Button onPress={value && payMethod === "Dinheiro" ? troco : handleSubmit(create)}>
           Enviar
         </Button>
       </View>

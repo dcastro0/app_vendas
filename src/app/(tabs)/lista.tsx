@@ -31,7 +31,6 @@ const Lista = () => {
   }
   useEffect(() => {
     getPayments();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderEmptyList = () => (
