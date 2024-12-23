@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Pressable,
+  ScrollView,
 } from "react-native";
 import { TextInputMask } from "react-native-masked-text";
 import { RadioButton } from "react-native-paper";
@@ -61,9 +62,9 @@ const App = () => {
     reset();
   }
   return (
-    <TouchableWithoutFeedback onPress={handleKeyboardDismiss}>
-      <View style={tw`flex p-6 justify-center items-center gap-6 mt-20`}>
-        <Text>Insira o valor:</Text>
+    <ScrollView style={tw`flex-1 bg-slate-50`} onTouchStart={handleKeyboardDismiss}>
+      <View style={tw`flex p-2 justify-center items-center gap-4`}>
+        <Text style={tw`text-lg text-gray-500`} >Insira o valor:</Text>
         <Controller
           control={control}
           name="value"
@@ -82,7 +83,7 @@ const App = () => {
           <Text style={tw`text-red-500 text-sm`}>{errors.value.message}</Text>
         )}
 
-        <Text>Selecione o método de pagamento:</Text>
+        <Text style={tw`text-lg text-gray-500`}>Selecione o método de pagamento:</Text>
         <Controller
           control={control}
           name="payMethod"
@@ -131,7 +132,7 @@ const App = () => {
           Enviar
         </Button>
       </View>
-    </TouchableWithoutFeedback>
+    </ScrollView >
   );
 };
 

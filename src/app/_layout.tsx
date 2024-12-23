@@ -21,6 +21,7 @@ const Layout = () => {
               );
             }
           }} />
+          <Stack.Screen name="login_sync" />
         </Stack>
       </AuthProvider>
     </SQLiteProvider>

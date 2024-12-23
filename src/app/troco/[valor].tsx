@@ -21,7 +21,9 @@ const Troco = () => {
     troco: troco,
     total_pago: valorRecebido ? parseFloat(valorRecebido.replace('R$', '').replace(',', '.')) : 0,
   };
+
   const paymentDb = usePaymentDb();
+
   async function create(data: PaymentFormData) {
     confirmacaoAlert(() => create(data));
     try {

@@ -8,6 +8,14 @@ async function signIn(data: SignInProp): Promise<AuthData> {
       if (!data.email || !data.password) {
         throw new Error("E-mail e senha são obrigatórios");
       }
+      if (data.email === "offline@offline.com" && data.password === "offline") {
+        return resolve({
+          token: "offline",
+          id: 0,
+          name: "Offline",
+          email: "offline@offline.com",
+        });
+      }
 
       const response = await axios.post(
         "https://menu.flowsay.io/sistema/applogin.php",

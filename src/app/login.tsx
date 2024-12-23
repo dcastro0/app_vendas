@@ -1,4 +1,4 @@
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, Pressable } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -33,6 +33,11 @@ const LoginScreen = () => {
     await signIn(data);
     router.replace("/");
   };
+
+  const handleOffline = async () => {
+    await signIn({ email: "offline@offline.com", password: "offline" });
+    router.replace("/");
+  }
 
   return (
     <View style={tw`flex-1 justify-center p-6`}>
@@ -84,6 +89,9 @@ const LoginScreen = () => {
       <View style={tw`self-center`}>
         <Button onPress={handleSubmit(onSubmit)}>Entrar</Button>
       </View>
+      <Pressable onPress={handleOffline} style={tw`self-center mt-4`}>
+        <Text style={tw`text-gray-600 text-lg`}>Vender Offline</Text>
+      </Pressable>
     </View>
   );
 };

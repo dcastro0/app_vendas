@@ -6,43 +6,110 @@ import sync from "@/services/sync";
 import { usePaymentDb } from "@/database/usePayamentDb";
 import { Vendas } from "@/schema/schemaVenda";
 import { Feather } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 const AccountScreen = () => {
   const { signOut, authData } = useAuth();
-  const { getPaymentsNoSync, updateSync } = usePaymentDb();
+  const { getPaymentsNoSync, updateSync, getOfflinePayments, updateUser } = usePaymentDb();
   const [data, setData] = useState<Vendas[]>([]);
 
   const handleLogout = () => {
     signOut();
   };
+
   async function getData() {
     const response = await getPaymentsNoSync();
     setData(response as Vendas[]);
   }
+
+  async function getDataOff() {
+    const response = await getOfflinePayments();
+    setData(response as Vendas[]);
+  }
+
   const handleSync = async () => {
+    if (!authData) {
+      Alert.alert("Erro", "Você precisa estar logado para sincronizar os dados.");
+      return;
+    }
+
+    if (authData.id === 0) {
+      Alert.alert("Erro", "Não é possível sincronizar pagamentos sem usuário autenticado.");
+      return;
+    }
+
     await getData();
     if (data.length === 0) {
       Alert.alert("Erro", "Nenhum pagamento para sincronizar.");
       return;
     }
+
     try {
       await sync(data);
-      data.forEach(async (item) => {
+
+      for (let item of data) {
         try {
           await updateSync(item.id);
         } catch (error) {
-          Alert.alert("Erro", "Falha ao atualizar o status de sincronização.");
+          if (error instanceof Error) {
+            Alert.alert("Erro", error.message);
+          } else {
+            Alert.alert("Erro", "Não foi possível sincronizar os dados.");
+          }
         }
-      });
+      }
       Alert.alert("Sucesso", "Dados sincronizados com sucesso.");
     } catch (error) {
-      Alert.alert("Erro", "Falha ao sincronizar os dados.");
+      if (error instanceof Error) {
+        Alert.alert("Erro", error.message);
+      } else {
+        Alert.alert("Erro", "Falha ao sincronizar os dados.");
+      }
     } finally {
       setData([]);
     }
   };
 
+  const syncOffline = async () => {
+    if (!authData) {
+      Alert.alert("Erro", "Você precisa estar logado para sincronizar os dados.");
+      return;
+    }
 
+    if (authData.id === 0) {
+      Alert.alert("Erro", "Não é possível sincronizar pagamentos sem usuário autenticado.");
+      return;
+    }
+
+    await getDataOff();
+    if (data.length === 0) {
+      Alert.alert("Erro", "Nenhum pagamento para sincronizar.");
+      return;
+    }
+
+    try {
+      for (let item of data) {
+        try {
+          await updateUser(item.id);
+        } catch (error) {
+          if (error instanceof Error) {
+            Alert.alert("Erro", error.message);
+          } else {
+            Alert.alert("Erro", "Não foi possível sincronizar os dados.");
+          }
+        }
+      }
+      Alert.alert("Sucesso", "Dados sincronizados com sucesso.");
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert("Erro", error.message);
+      } else {
+        Alert.alert("Erro", "Falha ao sincronizar os dados.");
+      }
+    } finally {
+      setData([]);
+    }
+  }
 
   return (
     <ScrollView contentContainerStyle={tw`flex-grow p-4`}>
@@ -56,14 +123,19 @@ const AccountScreen = () => {
         <Text style={tw`text-lg text-gray-600`}>Email: {authData?.email}</Text>
       </View>
 
-      <View style={tw`py-8 gap-2`}>
-
-        <Pressable
-          style={tw`bg-green-500 p-4 rounded-md`}
-          onPress={handleSync}
-        >
-          <Text style={tw`text-white text-center font-bold text-xl`}>Sincronizar</Text>
-        </Pressable>
+      <View style={tw`gap-2`}>
+        {authData?.id === 0 ? (
+          <Text style={tw`text-center text-red-400 font-bold text-xl mb-2`}>Faça login para sincronizar dados.</Text>
+        ) : (
+          <View style={tw`pt-8 gap-2`}>
+            <Pressable style={tw`bg-blue-600 p-4 rounded-md`} onPress={syncOffline}>
+              <Text style={tw`text-white font-bold text-center text-xl`}>Sincronizado dados Offline</Text>
+            </Pressable>
+            <Pressable style={tw`bg-green-500 p-4 rounded-md`} onPress={handleSync}>
+              <Text style={tw`text-white text-center font-bold text-xl`}>Sincronizar</Text>
+            </Pressable>
+          </View>
+        )}
         <Pressable style={tw`bg-red-500 p-4 rounded-md`} onPress={handleLogout}>
           <Text style={tw`text-white font-bold text-center text-xl`}>Sair</Text>
         </Pressable>

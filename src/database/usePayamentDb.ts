@@ -13,7 +13,7 @@ export function usePaymentDb() {
     );
     const { value, payMethod } = data;
     try {
-      if (!authData?.id) {
+      if (!authData) {
         throw new Error("Usuário não autenticado");
       }
       const response = await statament.executeAsync([
@@ -35,10 +35,10 @@ export function usePaymentDb() {
 
   async function getPayments() {
     try {
-      if (!authData?.id) {
+      if (!authData) {
         throw new Error("Usuário não autenticado");
       }
-      const query = `SELECT * FROM payments WHERE id_usuario = ${authData.id}`;
+      const query = `SELECT * FROM payments WHERE id_usuario = ${authData.id} OR id_usuario = 0`;
       const response = await database.getAllAsync(query);
       return response;
     } catch (error) {
@@ -48,8 +48,12 @@ export function usePaymentDb() {
 
   async function getPaymentsNoSync() {
     try {
-      if (!authData?.id) {
+      if (!authData) {
         throw new Error("Usuário não autenticado");
+      }
+
+      if (authData.id === 0) {
+        throw new Error("Não é possivel sincronizar pagamentos sem usuário autenticado");
       }
       const query = `SELECT * FROM payments WHERE sync = 0 AND id_usuario = ${authData.id}`;
       const response = await database.getAllAsync(query);
@@ -72,5 +76,40 @@ export function usePaymentDb() {
     }
   }
 
-  return { insertPayment, getPayments, getPaymentsNoSync, updateSync };
+  const getOfflinePayments = async () => {
+    try {
+      if (!authData) {
+        throw new Error("Usuário não autenticado");
+      }
+
+      if (authData.id === 0) {
+        throw new Error("Não é possivel sincronizar pagamentos sem usuário autenticado");
+      }
+      const query = `SELECT * FROM payments WHERE sync = 0 AND id_usuario = 0`;
+      const response = await database.getAllAsync(query);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  const updateUser = async (id: number) => {
+    const statament = await database.prepareAsync(`UPDATE payments SET id_usuario = ? WHERE id = ?`);
+    try {
+      if (!id) {
+        throw new Error("ID é obrigatório");
+      }
+      if (!authData || authData.id === 0) {
+        throw new Error("Usuário não autenticado");
+      }
+      const response = await statament.executeAsync([authData.id, id]);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+
+  return { insertPayment, getPayments, getPaymentsNoSync, updateSync, getOfflinePayments, updateUser };
 }

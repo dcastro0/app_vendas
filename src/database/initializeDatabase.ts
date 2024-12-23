@@ -12,7 +12,7 @@ const initializeDatabase = async (database: SQLiteDatabase) => {
         id_usuario INTEGER NOT NULL, 
         total_pago REAL NOT NULL,
         troco REAL NOT NULL
-      );
+      ); 
     `);
   } catch (error) {
     throw new Error("Erro ao criar a tabela de pagamentos");
