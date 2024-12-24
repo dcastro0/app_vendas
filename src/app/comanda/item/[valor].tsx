@@ -3,24 +3,22 @@ import {
   View,
   Alert,
   Text,
-  TouchableWithoutFeedback,
   Keyboard,
   Pressable,
   ScrollView,
 } from "react-native";
 import { TextInputMask } from "react-native-masked-text";
-import { RadioButton } from "react-native-paper";
+
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { PaymentSchema, PaymentFormData } from "@/schema/schema";
 import { usePaymentDb } from "@/database/usePayamentDb";
 import tw from "twrnc";
-import Button from "@/components/Button";
 import { useRouter } from "expo-router";
 import { showValueAlert, confirmacaoAlert } from "@/components/Alerts";
 
-const App = () => {
+const ItemComanda = () => {
   const {
     control,
     handleSubmit,
@@ -53,22 +51,13 @@ const App = () => {
   const handleKeyboardDismiss = () => {
     Keyboard.dismiss();
   };
-
-  const troco = () => {
-    router.push({
-      pathname: "/troco/[valor]",
-      params: { valor: value },
-    });
-    reset();
-  }
   const comanda = () => {
     if (!value) {
       Alert.alert("Erro", "Insira um valor para abrir a comanda");
       return;
     }
     router.push({
-      pathname: "/comanda/nome/[valor]",
-      params: { valor: value },
+      pathname: "/(tabs)/comandas",
     });
     reset();
   }
@@ -95,59 +84,16 @@ const App = () => {
         )}
 
         <Text style={tw`text-lg text-gray-500`}>Selecione o método de pagamento:</Text>
-        <Controller
-          control={control}
-          name="payMethod"
-          render={({ field: { onChange, value } }) => (
-            <RadioButton.Group onValueChange={onChange} value={value}>
-              <View style={tw`flex flex-row flex-wrap gap-4`}>
-                <Pressable
-                  style={tw`flex flex-row gap-2 items-center justify-center p-1`}
-                  onPress={onChange.bind(null, "Pix")}
-                >
-                  <RadioButton value="Pix" />
-                  <Text style={tw`font-bold text-lg`}>Pix</Text>
-                </Pressable>
-                <Pressable
-                  style={tw`flex flex-row gap-2 items-center justify-center p-1`}
-                  onPress={onChange.bind(null, "Dinheiro")}
-                >
-                  <RadioButton value="Dinheiro" />
-                  <Text style={tw`font-bold text-lg`}>Dinheiro</Text>
-                </Pressable>
-                <Pressable
-                  style={tw`flex flex-row gap-2 items-center justify-center p-1 `}
-                  onPress={onChange.bind(null, "Cartão de Crédito")}
-                >
-                  <RadioButton value="Cartão de Crédito" />
-                  <Text style={tw`font-bold text-lg`}>Cartão de Crédito</Text>
-                </Pressable>
 
-                <Pressable
-                  style={tw`flex flex-row gap-2 items-center justify-center p-1`}
-                  onPress={onChange.bind(null, "Cartão de Débito")}
-                >
-                  <RadioButton value="Cartão de Débito" />
-                  <Text style={tw`font-bold text-lg`}>Cartão de Débito</Text>
-                </Pressable>
-
-
-              </View>
-            </RadioButton.Group>
-          )}
-        />
         {errors.payMethod && (
           <Text style={tw`text-red-500 text-sm`}>{errors.payMethod.message}</Text>
         )}
-        <Pressable onPress={value && payMethod === "Dinheiro" ? troco : handleSubmit(create)} style={tw`bg-green-500 p-3 rounded-md w-3/4`}>
-          <Text style={tw`text-white text-center text-xl font-bold`}>Finalizar</Text>
-        </Pressable>
         <Pressable onPress={comanda} style={tw`bg-sky-500 p-3 rounded-md w-3/4`}>
-          <Text style={tw`text-white font-bold text-xl text-center`}>Abrir Comanda</Text>
+          <Text style={tw`text-white font-bold text-xl text-center`}>Adicionar item</Text>
         </Pressable>
       </View>
     </ScrollView >
   );
 };
 
-export default App;
+export default ItemComanda;

@@ -49,6 +49,15 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
+          name="comandas"
+          options={{
+            title: "Comandas",
+            tabBarIcon: ({ color }) => (
+              <FontAwesome size={28} name="sticky-note" color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
           name="lista"
           options={{
             title: "Lista",

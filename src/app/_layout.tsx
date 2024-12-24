@@ -21,7 +21,20 @@ const Layout = () => {
               );
             }
           }} />
-          <Stack.Screen name="login_sync" />
+          <Stack.Screen name="comanda/nome/[valor]" options={{
+            headerShown: true, headerTitleAlign: 'center', title: "Comanda", headerLeft: () => {
+              return (
+                <Pressable onPress={() => router.back()}><Text>Voltar</Text></Pressable>
+              );
+            }
+          }} />
+          <Stack.Screen name="comanda/item/[valor]" options={{
+            headerShown: true, headerTitleAlign: 'center', title: "Adicionar Item", headerLeft: () => {
+              return (
+                <Pressable onPress={() => router.back()}><Text>Voltar</Text></Pressable>
+              );
+            }
+          }} />
         </Stack>
       </AuthProvider>
     </SQLiteProvider>
