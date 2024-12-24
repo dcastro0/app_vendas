@@ -5,7 +5,7 @@ import { RefreshControl, FlatList, View, Text } from "react-native";
 import tw from "twrnc";
 import Button from "@/components/Button";
 import ListRow from "@/components/ListRow";
-import { Feather, FontAwesome } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 
 const Lista = () => {
   const [show, setShow] = useState<PaymentFormData[]>([]);
@@ -56,7 +56,7 @@ const Lista = () => {
       </View>
 
       <FlatList
-        style={tw`flex-1`} // Isso vai fazer a lista ocupar o espaço restante
+        style={tw`flex-1`}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={getPayments} />
         }

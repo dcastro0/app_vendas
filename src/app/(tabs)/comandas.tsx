@@ -1,15 +1,18 @@
 import { useComandaDb } from "@/database/useComandaDb";
 import { useState, useEffect } from "react";
-import { RefreshControl, FlatList, View, Text } from "react-native";
+import { RefreshControl, FlatList, View, Text, Pressable } from "react-native";
 import tw from "twrnc";
 import Button from "@/components/Button";
 import ListRow from "@/components/ListRow";
 import { ComandaType } from "@/schema/schemaComanda";
+import { router } from "expo-router";
 
-const Comanda = () => {
+const ListaComanda = () => {
+
   const [show, setShow] = useState<ComandaType[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
   const comandaDb = useComandaDb();
 
   const formatCurrency = (value: number) => {
@@ -23,13 +26,17 @@ const Comanda = () => {
     setRefreshing(true);
     setError(null);
     try {
-      const response = await comandaDb.getComandas();
+      const response = await comandaDb.getAllComandas();
       setShow(response);
     } catch (err) {
       setError("Erro ao carregar as comandas. Tente novamente.");
     } finally {
       setRefreshing(false);
     }
+  }
+
+  const openComanda = (id: number) => {
+    router.push({ pathname: "/comanda/[id]", params: { id: id } });
   }
 
   useEffect(() => {
@@ -68,14 +75,18 @@ const Comanda = () => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={getComandas} />
           }
-          data={show.reverse()}
+          data={[...show].reverse()}
           keyExtractor={(item) => item.id?.toString() ?? "0"}
           renderItem={({ item }) => (
-            <View style={tw`flex-row justify-between p-1 w-full border border-white bg-sky-600`} key={item.id}>
+            <Pressable
+              style={tw`flex-row justify-between p-3 w-full border border-white bg-sky-600`}
+              key={item.id}
+              onPress={() => item.id !== undefined && openComanda(item.id)}
+            >
               <ListRow>{item.id}</ListRow>
               <ListRow>{item.name}</ListRow>
               <ListRow>{formatCurrency(Number(item.value))}</ListRow>
-            </View>
+            </Pressable>
           )}
           ListEmptyComponent={renderEmptyList}
         />
@@ -84,4 +95,4 @@ const Comanda = () => {
   );
 };
 
-export default Comanda;
+export default ListaComanda;
