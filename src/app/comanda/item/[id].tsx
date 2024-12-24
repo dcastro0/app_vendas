@@ -48,7 +48,7 @@ const ItemComanda = () => {
       if (response) {
         Alert.alert("Sucesso", "Item adicionado à comanda!");
         reset();
-        router.push({ pathname: "/comanda/[id]", params: { id: comandaId } });
+        router.replace({ pathname: "/comanda/[id]", params: { id: comandaId } });
       } else {
         Alert.alert("Erro", "Não foi possível adicionar o item. Tente novamente.");
       }

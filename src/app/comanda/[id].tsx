@@ -31,7 +31,7 @@ const Comanda = () => {
   }, []);
 
   const navigateToItem = () => {
-    router.push({ pathname: '/comanda/item/[id]', params: { id: comandaId } });
+    router.replace({ pathname: '/comanda/item/[id]', params: { id: comandaId } });
   };
 
   const renderItem = ({ item }: { item: ItemComandaType }) => (
