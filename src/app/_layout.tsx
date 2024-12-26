@@ -4,11 +4,13 @@ import initializeDatabase from "@/database/initializeDatabase";
 import { Stack } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
 import tw from "twrnc";
+import { StatusBar } from "react-native";
 
 const Layout = () => {
   return (
     <SQLiteProvider databaseName="sqlite.db" onInit={initializeDatabase}>
       <AuthProvider>
+        <StatusBar barStyle="dark-content" />
         <Stack
           initialRouteName="root"
           screenOptions={{
