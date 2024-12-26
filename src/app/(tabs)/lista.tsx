@@ -51,8 +51,6 @@ const Lista = () => {
         <ListRow>Metódo de Pagamento</ListRow>
         <ListRow> - </ListRow>
         <ListRow>Data</ListRow>
-        <ListRow> - </ListRow>
-        <ListRow>Id Usuário</ListRow>
       </View>
 
       <FlatList
@@ -74,9 +72,8 @@ const Lista = () => {
           >
             <ListRow>{item.id}</ListRow>
             <ListRow>{formatCurrency(parseFloat(item.value))}</ListRow>
-            <ListRow>{item.payMethod}</ListRow>
+            <ListRow>{item.payMethod} {item.payMethod2 ? `/${item.payMethod2}` : ''}</ListRow>
             <ListRow>{formatDate(item.createdAt || '')}</ListRow>
-            <ListRow>{item.id_usuario}</ListRow>
           </View>
         )}
         ListEmptyComponent={renderEmptyList}
