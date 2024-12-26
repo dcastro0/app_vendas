@@ -19,7 +19,7 @@ const PaymentSchema = z.object({
   sync: z.number().optional(),
   total_pago: z.number().optional(),
   troco: z.number().optional(),
-  id_comanda: z.number().optional(),
+  payMethod2: PayMethodSchema.optional(),
 });
 export type PaymentFormData = z.infer<typeof PaymentSchema>;
 

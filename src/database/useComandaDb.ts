@@ -129,7 +129,44 @@ export function useComandaDb() {
     }
   }
 
+  async function closeComandaTwoMethods(id: number, payMethod: PayMethodType, payMethod2: PayMethodType, value: string, value2: string) {
+    if (!authData) {
+      throw new Error("Usuário não autenticado");
+    }
+    const parsedValue = parseFloat(value.replace("R$", "").replace(".", "").replace(",", ".").trim());
+    const parsedValue2 = parseFloat(value2.replace("R$", "").replace(".", "").replace(",", ".").trim());
+    if (parsedValue === 0 || parsedValue2 === 0) {
+      throw new Error("Valor não informado");
+    }
 
+    try {
+      const comanda = await getComandaById(id);
+      const totalValue = comanda.value;
+      if (parsedValue + parsedValue2 !== totalValue) {
+        throw new Error("Valores invalidos");
+      }
 
-  return { getAllComandas, createComanda, addItemComanda, getComandaById, closeComanda };
+      const data = {
+        value: totalValue.toString(),
+        payMethod: payMethod,
+        payMethod2: payMethod2,
+      };
+
+      await insertPayment(data);
+
+      const statement = await database.prepareAsync("UPDATE comandas SET active = 0 WHERE id = ?");
+      const updateResponse = await statement.executeAsync([id]);
+
+      if (updateResponse.changes === 0) {
+        throw new Error("Erro ao desativar a comanda");
+      }
+
+      return updateResponse;
+    } catch (error) {
+      console.error("Erro ao fechar comanda:", error);
+      throw error;
+    }
+  }
+
+  return { getAllComandas, createComanda, addItemComanda, getComandaById, closeComanda, closeComandaTwoMethods };
 }

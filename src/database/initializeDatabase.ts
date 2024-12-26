@@ -7,6 +7,7 @@ const initializeDatabase = async (database: SQLiteDatabase) => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         value REAL NOT NULL,
         payMethod TEXT NOT NULL,
+        payMethod2 TEXT,
         createdAt DATETIME NOT NULL,
         sync INTEGER DEFAULT 0,  
         id_usuario INTEGER NOT NULL, 

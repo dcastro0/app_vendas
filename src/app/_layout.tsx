@@ -3,7 +3,7 @@ import { AuthProvider } from "@/contexts/Auth";
 import initializeDatabase from "@/database/initializeDatabase";
 import { Stack } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
-
+import tw from "twrnc";
 
 const Layout = () => {
   return (
@@ -13,6 +13,12 @@ const Layout = () => {
           initialRouteName="root"
           screenOptions={{
             headerShown: false,
+
+
+
+            headerStyle: { backgroundColor: tw.color("slate-300") },
+            headerTitleStyle: { color: tw.color("blue-700"), fontSize: 24, fontWeight: "bold" },
+
           }}
         >
           <Stack.Screen name="root" />
@@ -53,7 +59,15 @@ const Layout = () => {
             options={{
               headerShown: true,
               headerTitleAlign: "center",
-              title: "Dados Comanda",
+              title: "Fechar Comanda",
+            }}
+          />
+          <Stack.Screen
+            name="comanda/twoMetodoPag/[id]"
+            options={{
+              headerShown: true,
+              headerTitleAlign: "center",
+              title: "Metodo de Pagamento",
             }}
           />
         </Stack>

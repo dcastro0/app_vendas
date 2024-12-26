@@ -8,7 +8,7 @@ export function usePaymentDb() {
 
   async function insertPayment(data: PaymentFormData) {
     const statament = await database.prepareAsync(
-      "INSERT INTO payments (value, payMethod, createdAt, id_usuario, troco, total_pago) VALUES (?, ?, ?, ?, ?, ?)"
+      "INSERT INTO payments (value, payMethod, createdAt, id_usuario, troco, total_pago, payMethod2) VALUES (?, ?, ?, ?, ?, ?, ?)"
     );
     const { value, payMethod } = data;
     try {
@@ -21,7 +21,8 @@ export function usePaymentDb() {
         new Date().toISOString(),
         authData.id,
         payMethod === "Dinheiro" ? data.troco ?? 0 : 0,
-        payMethod === "Dinheiro" ? data.total_pago ?? data.value : data.value
+        payMethod === "Dinheiro" ? data.total_pago ?? data.value : data.value,
+        data.payMethod2 ?? null,
       ]);
       const insertRowId = response.lastInsertRowId.toLocaleString();
       return { insertRowId };

@@ -6,6 +6,7 @@ import { Alert, Pressable, ScrollView, Text, View } from "react-native"
 import { Picker } from '@react-native-picker/picker';
 import tw from 'twrnc'
 import { TextInputMask } from "react-native-masked-text"
+import { Feather } from "@expo/vector-icons"
 
 const MetodoPag = () => {
   const { id } = useLocalSearchParams()
@@ -16,6 +17,8 @@ const MetodoPag = () => {
   const [error, setError] = useState<string>('')
   const [troco, setTroco] = useState<number>(0)
   const [totalComanda, setTotalComanda] = useState<number>(0)
+
+  const [showSecondPayment, setShowSecondPayment] = useState<boolean>(false);
   const pickerRef = useRef<Picker<PayMethodType> | null>(null);
 
   function open() {
@@ -38,6 +41,10 @@ const MetodoPag = () => {
 
     carregarComanda();
   }, [comandaId]);
+
+  const moreMethods = () => {
+    router.replace({ pathname: "/comanda/twoMetodoPag/[id]", params: { id: comandaId } });
+  }
 
   const calcularTroco = () => {
     const valorRecebidoFloat = parseFloat(valorRecebido.replace('R$', '').replace(".", "").replace(',', '.').trim());
@@ -81,9 +88,10 @@ const MetodoPag = () => {
 
   return (
     <ScrollView style={tw`flex-1`}>
-      <View style={tw`flex justify-center items-center p-4 gap-10`}>
+      <View style={tw`flex justify-center items-center p-4 gap-2`}>
         <Text style={tw`text-2xl text-gray-600`}>Método de pagamento:</Text>
-        <View style={tw`w-full bg-sky-400 rounded-md`}>
+
+        <View style={tw`w-full flex bg-sky-400 rounded-md`}>
           <Picker
             ref={pickerRef}
             style={tw`w-full text-white`}
@@ -99,6 +107,9 @@ const MetodoPag = () => {
             <Picker.Item label="Pix" value="Pix" />
           </Picker>
         </View>
+        <Pressable onPress={moreMethods} style={tw`p-2`}>
+          <Text style={tw`text-gray-500 text`} >Pra receber por mais de um metódo clique aqui</Text>
+        </Pressable>
 
         {payMethod === "Dinheiro" && (
           <View style={tw`w-full flex items-center gap-4`}>
@@ -121,11 +132,13 @@ const MetodoPag = () => {
           </View>
         )}
 
+
+        <Text style={tw`text-2xl text-gray-600`}>Total da comanda: R${totalComanda.toFixed(2)}</Text>
         <Pressable onPress={closeComanda} style={tw`bg-green-500 p-3 rounded-md mt-4 w-full`}>
           <Text style={tw`text-white text-xl font-bold text-center`}>Fechar comanda</Text>
         </Pressable>
       </View>
-    </ScrollView>
+    </ScrollView >
   )
 }
 
