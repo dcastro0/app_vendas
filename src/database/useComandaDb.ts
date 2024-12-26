@@ -1,10 +1,14 @@
 import { useAuth } from "@/hooks/useAuth";
 import { ItemComandaType } from "@/schema/schemaComanda";
 import { useSQLiteContext } from "expo-sqlite";
+import { usePaymentDb } from "./usePayamentDb";
+import { PayMethodType } from "@/schema/schema";
 
 export function useComandaDb() {
   const database = useSQLiteContext();
   const { authData } = useAuth();
+  const { insertPayment } = usePaymentDb();
+
 
   async function getAllComandas() {
     try {
@@ -12,7 +16,7 @@ export function useComandaDb() {
         throw new Error("Usuário não autenticado");
       }
 
-      const query = `SELECT * FROM comandas WHERE id_usuario = ? OR id_usuario = 0`;
+      const query = `SELECT * FROM comandas WHERE (id_usuario = ? OR id_usuario = 0) AND active = 1`;
       const params = [authData.id];
       const comandas = await database.getAllAsync(query, params);
 
@@ -55,7 +59,7 @@ export function useComandaDb() {
 
     try {
       const statement = await database.prepareAsync("INSERT INTO item_comanda (id_comanda, value, quantity) VALUES (?, ?, ?)");
-      const parsedValue = parseFloat(data.value.replace("R$", "").replace(",", ".").trim());
+      const parsedValue = parseFloat(data.value.replace("R$", "").replace(".", "").replace(",", ".").trim());
 
       if (isNaN(parsedValue)) {
         throw new Error("Valor inválido.");
@@ -94,5 +98,38 @@ export function useComandaDb() {
     }
   }
 
-  return { getAllComandas, createComanda, addItemComanda, getComandaById };
+  async function closeComanda(id: number, paymentMethod: PayMethodType, troco: number) {
+    if (!authData) {
+      throw new Error("Usuário não autenticado");
+    }
+
+    try {
+      const comanda = await getComandaById(id);
+      const totalValue = comanda.value;
+
+      const data = {
+        value: totalValue.toString(),
+        payMethod: paymentMethod,
+        troco: troco,
+      };
+
+      await insertPayment(data);
+
+      const statement = await database.prepareAsync("UPDATE comandas SET active = 0 WHERE id = ?");
+      const updateResponse = await statement.executeAsync([id]);
+
+      if (updateResponse.changes === 0) {
+        throw new Error("Erro ao desativar a comanda");
+      }
+
+      return updateResponse;
+    } catch (error) {
+      console.error("Erro ao fechar comanda:", error);
+      throw error;
+    }
+  }
+
+
+
+  return { getAllComandas, createComanda, addItemComanda, getComandaById, closeComanda };
 }

@@ -19,7 +19,7 @@ const Troco = () => {
     value: valor as string,
     payMethod: "Dinheiro",
     troco: troco,
-    total_pago: valorRecebido ? parseFloat(valorRecebido.replace('R$', '').replace(',', '.')) : 0,
+    total_pago: valorRecebido ? parseFloat(valorRecebido.replace('R$', '').replace(".", "").replace(',', '.').trim()) : 0,
   };
 
   const paymentDb = usePaymentDb();
@@ -31,7 +31,7 @@ const Troco = () => {
         Alert.alert("Erro", "Informe o valor recebido.");
         return;
       }
-      if (data.total_pago < parseFloat(data.value.replace('R$', '').replace(',', '.'))) {
+      if (data.total_pago < parseFloat(data.value.replace('R$', '').replace(".", "").replace(',', '.').trim())) {
         Alert.alert("Erro", "Valor recebido menor que o valor da compra.");
         return;
       }
@@ -51,7 +51,7 @@ const Troco = () => {
     }
   }
   const handleValueChange = (value: string): number => {
-    const parsedValue = parseFloat(value.replace('R$', '').replace(',', '.').trim());
+    const parsedValue = parseFloat(value.replace('R$', '').replace(".", "").replace(',', '.').trim());
     return parsedValue;
   };
 
@@ -82,11 +82,11 @@ const Troco = () => {
       {error && <Text style={tw`text-red-500 text-sm`}>{error}</Text>}
       <Button onPress={calcularTroco}>Calcular</Button>
 
-      <View style={tw`flex flex-col items-center justify-center gap-4 p-4 rounded-md bg-red-600`}>
+      <View style={tw`flex flex-col items-center justify-center gap-4 p-4 rounded-md bg-slate-300`}>
 
-        <Text style={tw`text-white text-2xl font-bold`}>Troco: R$ {troco.toFixed(2).replace(".", ",")}</Text>
-        <Text style={tw`text-white text-2xl font-bold`}>Valor Recebido: {valorRecebido}</Text>
-        <Text style={tw`text-white text-2xl font-bold`}>Valor Compra: {valor}</Text>
+        <Text style={tw`text-blue-700 text-2xl font-bold`}>Troco: R$ {troco.toFixed(2).replace(".", ",")}</Text>
+        <Text style={tw`text-blue-400 text-2xl font-bold`}>Valor Recebido: {valorRecebido}</Text>
+        <Text style={tw`text-blue-700 text-2xl font-bold`}>Valor Compra: {valor}</Text>
       </View>
       <Button onPress={() => create(data)}>Enviar</Button>
     </View>

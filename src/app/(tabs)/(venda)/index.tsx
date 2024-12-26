@@ -3,7 +3,6 @@ import {
   View,
   Alert,
   Text,
-  TouchableWithoutFeedback,
   Keyboard,
   Pressable,
   ScrollView,
@@ -12,13 +11,13 @@ import { TextInputMask } from "react-native-masked-text";
 import { RadioButton } from "react-native-paper";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-import { PaymentSchema, PaymentFormData } from "@/schema/schema";
+import { Picker } from "@react-native-picker/picker";
+import { PaymentSchema, PaymentFormData, PayMethodType } from "@/schema/schema";
 import { usePaymentDb } from "@/database/usePayamentDb";
 import tw from "twrnc";
-import Button from "@/components/Button";
 import { useRouter } from "expo-router";
 import { showValueAlert, confirmacaoAlert } from "@/components/Alerts";
+import { useRef } from "react";
 
 const App = () => {
   const {
@@ -30,6 +29,16 @@ const App = () => {
   } = useForm<PaymentFormData>({
     resolver: zodResolver(PaymentSchema),
   });
+
+  const pickerRef = useRef<Picker<PayMethodType> | null>(null);
+
+  function open() {
+    pickerRef.current?.focus();
+  }
+
+  function close() {
+    pickerRef.current?.blur();
+  }
 
   const paymentDb = usePaymentDb();
   const router = useRouter();
@@ -99,41 +108,23 @@ const App = () => {
           control={control}
           name="payMethod"
           render={({ field: { onChange, value } }) => (
-            <RadioButton.Group onValueChange={onChange} value={value}>
-              <View style={tw`flex flex-row flex-wrap gap-4`}>
-                <Pressable
-                  style={tw`flex flex-row gap-2 items-center justify-center p-1`}
-                  onPress={onChange.bind(null, "Pix")}
-                >
-                  <RadioButton value="Pix" />
-                  <Text style={tw`font-bold text-lg`}>Pix</Text>
-                </Pressable>
-                <Pressable
-                  style={tw`flex flex-row gap-2 items-center justify-center p-1`}
-                  onPress={onChange.bind(null, "Dinheiro")}
-                >
-                  <RadioButton value="Dinheiro" />
-                  <Text style={tw`font-bold text-lg`}>Dinheiro</Text>
-                </Pressable>
-                <Pressable
-                  style={tw`flex flex-row gap-2 items-center justify-center p-1 `}
-                  onPress={onChange.bind(null, "Cartão de Crédito")}
-                >
-                  <RadioButton value="Cartão de Crédito" />
-                  <Text style={tw`font-bold text-lg`}>Cartão de Crédito</Text>
-                </Pressable>
+            <View style={tw`w-full bg-slate-300 rounded-md`}>
+              <Picker
+                ref={pickerRef}
+                style={tw`w-full text-blue-700`}
+                dropdownIconColor={tw.color('blue-700')}
+                dropdownIconRippleColor={tw.color('white')}
+                itemStyle={tw`bg-blue-400 font-bold`}
+                selectedValue={value}
+                onValueChange={onChange}
+              >
+                <Picker.Item label="Dinheiro" value="Dinheiro" />
+                <Picker.Item label="Cartão de Débito" value="Cartão de Débito" />
+                <Picker.Item label="Cartão de Crédito" value="Cartão de Crédito" />
+                <Picker.Item label="Pix" value="Pix" />
+              </Picker>
+            </View>
 
-                <Pressable
-                  style={tw`flex flex-row gap-2 items-center justify-center p-1`}
-                  onPress={onChange.bind(null, "Cartão de Débito")}
-                >
-                  <RadioButton value="Cartão de Débito" />
-                  <Text style={tw`font-bold text-lg`}>Cartão de Débito</Text>
-                </Pressable>
-
-
-              </View>
-            </RadioButton.Group>
           )}
         />
         {errors.payMethod && (

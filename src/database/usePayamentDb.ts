@@ -3,13 +3,12 @@ import { PaymentFormData } from "@/schema/schema";
 import { useSQLiteContext } from "expo-sqlite";
 
 export function usePaymentDb() {
-
   const database = useSQLiteContext();
   const { authData } = useAuth();
 
   async function insertPayment(data: PaymentFormData) {
     const statament = await database.prepareAsync(
-      "INSERT INTO payments (value, payMethod, createdAt, id_usuario, troco, total_pago) VALUES (?, ?, ?, ?, ?, ?)",
+      "INSERT INTO payments (value, payMethod, createdAt, id_usuario, troco, total_pago) VALUES (?, ?, ?, ?, ?, ?)"
     );
     const { value, payMethod } = data;
     try {
@@ -17,7 +16,7 @@ export function usePaymentDb() {
         throw new Error("Usuário não autenticado");
       }
       const response = await statament.executeAsync([
-        parseFloat(value.replace("R$", "").replace(",", ".").trim()),
+        parseFloat(value.replace("R$", "").replace(".", "").replace(",", ".").trim()),
         payMethod,
         new Date().toISOString(),
         authData.id,
@@ -53,7 +52,7 @@ export function usePaymentDb() {
       }
 
       if (authData.id === 0) {
-        throw new Error("Não é possivel sincronizar pagamentos sem usuário autenticado");
+        throw new Error("Não é possível sincronizar pagamentos sem usuário autenticado");
       }
       const query = `SELECT * FROM payments WHERE sync = 0 AND id_usuario = ${authData.id}`;
       const response = await database.getAllAsync(query);
@@ -74,7 +73,7 @@ export function usePaymentDb() {
     } catch (error) {
       throw error;
     }
-  }
+  };
 
   const getOfflinePayments = async () => {
     try {
@@ -83,7 +82,7 @@ export function usePaymentDb() {
       }
 
       if (authData.id === 0) {
-        throw new Error("Não é possivel sincronizar pagamentos sem usuário autenticado");
+        throw new Error("Não é possível sincronizar pagamentos sem usuário autenticado");
       }
       const query = `SELECT * FROM payments WHERE sync = 0 AND id_usuario = 0`;
       const response = await database.getAllAsync(query);
@@ -91,7 +90,7 @@ export function usePaymentDb() {
     } catch (error) {
       throw error;
     }
-  }
+  };
 
   const updateUser = async (id: number) => {
     const statament = await database.prepareAsync(`UPDATE payments SET id_usuario = ? WHERE id = ?`);
@@ -107,9 +106,7 @@ export function usePaymentDb() {
     } catch (error) {
       throw error;
     }
-  }
-
-
+  };
 
   return { insertPayment, getPayments, getPaymentsNoSync, updateSync, getOfflinePayments, updateUser };
 }

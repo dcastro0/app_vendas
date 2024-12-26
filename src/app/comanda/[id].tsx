@@ -2,7 +2,7 @@ import { useComandaDb } from '@/database/useComandaDb';
 import { ComandaType, ItemComandaType } from '@/schema/schemaComanda';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { View, Text, Pressable, FlatList } from 'react-native';
+import { View, Text, Pressable, FlatList, Alert } from 'react-native';
 import tw from 'twrnc';
 
 const Comanda = () => {
@@ -42,6 +42,7 @@ const Comanda = () => {
     </View>
   );
 
+
   if (!comanda) return <Text>Loading...</Text>;
 
   if (comanda.items_comanda?.length === 0 || !comanda.items_comanda) {
@@ -60,8 +61,8 @@ const Comanda = () => {
           <Text style={tw`text-white font-bold text-xl`}>Adicionar mais itens</Text>
         </Pressable>
 
-        <Pressable style={tw`bg-red-500 p-3 rounded-md mt-4`}>
-          <Text style={tw`text-white font-bold text-xl`}>Fechar Comanda</Text>
+        <Pressable style={tw`bg-red-500 p-3 rounded-md mt-4`} onPress={() => router.replace({ pathname: '/comanda/metodoPag/[id]', params: { id: comandaId } })}>
+          <Text style={tw`text-white font-bold text-xl`} >Fechar Comanda</Text>
         </Pressable>
       </View>
     );
@@ -85,7 +86,7 @@ const Comanda = () => {
         <Text style={tw`text-white font-bold text-xl`}>Adicionar mais itens</Text>
       </Pressable>
 
-      <Pressable style={tw`bg-red-500 p-3 rounded-md mt-4`}>
+      <Pressable style={tw`bg-red-500 p-3 rounded-md mt-4`} onPress={() => router.replace({ pathname: '/comanda/metodoPag/[id]', params: { id: comandaId } })}>
         <Text style={tw`text-white font-bold text-xl`}>Fechar Comanda</Text>
       </Pressable>
     </View>

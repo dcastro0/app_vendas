@@ -48,6 +48,14 @@ const Layout = () => {
               title: "Dados Comanda",
             }}
           />
+          <Stack.Screen
+            name="comanda/metodoPag/[id]"
+            options={{
+              headerShown: true,
+              headerTitleAlign: "center",
+              title: "Dados Comanda",
+            }}
+          />
         </Stack>
       </AuthProvider>
     </SQLiteProvider>

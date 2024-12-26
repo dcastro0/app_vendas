@@ -14,7 +14,7 @@ const ComandaNome = () => {
   const [name, setName] = useState('');
   const [erro, setErro] = useState('');
 
-  const value = parseFloat((valor as string).replace("R$", "").replace(",", ".").trim())
+  const value = parseFloat((valor as string).replace("R$", "").replace(".", "").replace(",", ".").trim())
 
   const create = async () => {
     if (name.length === 0) {
